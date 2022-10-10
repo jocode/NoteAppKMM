@@ -87,3 +87,28 @@ dependencies {
 ```
 
 :star: After that, you can run the Android and iOS emulator to check everything is working fine.
+
+## Implementing the database
+
+We need to create the directory where is generated all classes for SQLDelight **sqldelight/database** inside path `shared/src/commonMain/sqldelight/database` - **shared/src/commonMain**
+
+And setup the project on [build.gradle.kts](shared/build.gradle.kts)
+
+```kotlin
+sqldelight {
+    database("NoteDatabase") {
+        packageName = "com.crexative.noteappkmm.database"
+        sourceFolders = listOf("sqldelight")
+    }
+}
+```
+
+And also, we need to install the plugin SQLDelight to Generates typesafe Kotlin APIs from SQL, and provides language features for SQL inside the IDE.
+
+And after that, we can created out files for the database. For example the [`note.sq`](sqldelight/database/note.sq) and write the respective code in SQL.
+
+### Database schema
+
+After, that we write the SQL sentences on [note.sq](sqldelight/database/note.sq) file, we need to rebuild the project to generate the class with the plugin installed previously.
+
+If all is done well, we can use the `private val db = NoteEntity()` sentence to check if the class are generated successful on [generated](shared/build/generated/sqldelight/code/NoteDatabase/commonMain/database).
