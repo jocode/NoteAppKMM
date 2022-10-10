@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS noteEntity(
     created INTEGER NOT NULL
 );
 
-getAllNoted:
+getAllNotes:
 SELECT  *
 FROM noteEntity;
 

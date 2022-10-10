@@ -112,3 +112,66 @@ And after that, we can created out files for the database. For example the [`not
 After, that we write the SQL sentences on [note.sq](sqldelight/database/note.sq) file, we need to rebuild the project to generate the class with the plugin installed previously.
 
 If all is done well, we can use the `private val db = NoteEntity()` sentence to check if the class are generated successful on [generated](shared/build/generated/sqldelight/code/NoteDatabase/commonMain/database).
+
+
+## Note Domain Model
+
+In the commonMain we write the all shared code tha we can use on both platforms.
+In this case, make sense create all the business logic for our application.
+
+For the database, as each platform have your own driver, we need to create a class with the **expect** keyword to implement on the respective platform.
+
+**expect** Basically tell us what needs to be implemented on the respective platform. With the **actual** keyword.
+
+[DatabaseDriverFactory.kt](shared/src/commonMain/kotlin/com/crexative/noteappkmm/data/local/DatabaseDriverFactory.kt)
+```kotlin
+expect class DatabaseDriverFactory {
+    fun createDriver(): SqlDriver
+}
+```
+
+And we need to implement this class on android and ios packages.
+
+Android [DatabaseDriverFactory.kt](shared/src/androidMain/kotlin/com/crexative/noteappkmm/data/local/DatabaseDriverFactory.kt)
+```kotlin
+actual class DatabaseDriverFactory(private val context: Context) {
+
+    actual fun createDriver() : SqlDriver {
+        return AndroidSqliteDriver(NoteDatabase.Schema, context, "note.db")
+    }
+
+}
+```
+
+iOS [DatabaseDriverFactory.kt](shared/src/iosMain/kotlin/com/crexative/noteappkmm/data/local/DatabaseDriverFactory.kt)
+```kotlin
+actual class DatabaseDriverFactory {
+
+    actual fun createDriver() : SqlDriver {
+        return NativeSqliteDriver(NoteDatabase.Schema, "note.db")
+    }
+
+}
+```
+
+The project structure for **commonMain** is
+
+```kotlin
+commonMain/
+├── data/
+│   ├──local/
+│   │    └──DatabaseDriverFactory.kt
+│   └──note/
+│        ├── NoteMapper.kt
+│        └── SqlDelightNoteDataSource.kt
+├── domain/
+│   ├──note/
+│   │    ├── Note.kt
+│   │    ├── NoteDataSource.kt
+│   │    └── SearchNotes.kt
+│   └──time/
+│        └── DateTimeUtil.kt
+│
+└── presentation/
+    └── Colors.kt
+```
