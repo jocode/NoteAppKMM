@@ -197,3 +197,23 @@ private val notes = savedStateHandle.getStateFlow("notes", emptyList<Note>())
 private val searchText = savedStateHandle.getStateFlow("searchText", "")
 private val isSearchActive = savedStateHandle.getStateFlow("isSearchActive", false)
 ```
+
+To create a list of notes to test, you can do this on the ViewModel
+
+```kotlin
+init {
+    viewModelScope.launch {
+        (1..10).forEach {
+            noteDataSource.insertNote(
+                Note(
+                    id = null,
+                    title = "Note $it",
+                    content = "My content $it",
+                    colorHex = Note.generateRandomColor(),
+                    created = DateTimeUtil.now()
+                )
+            )
+        }
+    }
+}
+```
