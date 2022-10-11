@@ -175,3 +175,25 @@ commonMain/
 └── presentation/
     └── Colors.kt
 ```
+
+## Presentation - Android
+
+**combine** triggered when some of single arguments emits a value
+
+```kotlin
+val state = combine(notes, searchText, isSearchActive) { notes, searchText, isSearchActive ->
+    NoteListState(
+        notes = searchNotes.execute(notes, searchText),
+        searchText = searchText,
+        isSearchActive = isSearchActive
+    )
+}.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), NoteListState())
+```
+
+Also, it's consider have a stateHandle for android, when something happen and android killed the process.
+
+```kotlin
+private val notes = savedStateHandle.getStateFlow("notes", emptyList<Note>())
+private val searchText = savedStateHandle.getStateFlow("searchText", "")
+private val isSearchActive = savedStateHandle.getStateFlow("isSearchActive", false)
+```
