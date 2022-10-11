@@ -217,3 +217,28 @@ init {
     }
 }
 ```
+
+## Compose navigation
+
+This is the usage for navigation in the app in [MainActivity.kt](androidApp/src/main/java/com/crexative/noteappkmm/android/MainActivity.kt).
+
+```kotlin
+val navController = rememberNavController()
+NavHost(navController = navController, startDestination = "note_list") {
+    composable(route = "note_list") {
+        NoteListScreen(navController = navController)
+    }
+    composable(
+        route = "note_detail/{noteId}",
+        arguments = listOf(
+            navArgument(name = "noteId") {
+                type = NavType.LongType
+                defaultValue = -1L
+            }
+        )
+    ) { backStackEntry ->
+        val noteId = backStackEntry.arguments?.getLong("noteId") ?: -1L
+        NoteDetailScreen(noteId = noteId, navController = navController)
+    }
+}
+```
