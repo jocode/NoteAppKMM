@@ -242,3 +242,15 @@ NavHost(navController = navController, startDestination = "note_list") {
     }
 }
 ```
+
+## Presentation in IOS 
+
+> :bulb: We can't build the iOS UI in Android Studio, we need to use xcode for that and you need a mac because only runs on a Mac and we will now be using Swift and Swift UI for building the UI.
+
+To test insert notes on iOS, we can do it the next:
+
+```swift
+noteDataSource.insertNote(note: Note(id: nil, title: "Note title", content: "Note content", colorHex: 0xFFF543, created: DateTimeUtil().now()), completionHandler: { error in
+    
+})
+```
