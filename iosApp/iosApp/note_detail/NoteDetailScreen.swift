@@ -11,21 +11,43 @@ import shared
 
 struct NoteDetailScreen: View {
     
-    private var noteDataSource: NoteDataSource?
+    private var noteDataSource: NoteDataSource
     private var noteId: Int64? = nil
     
-    init(noteDataSource: NoteDataSource? = nil, noteId: Int64? = nil) {
+    @StateObject var viewModel = NoteDetailViewModel(noteDataSource: nil)
+    
+    @Environment(\.presentationMode) var presentation
+    
+    init(noteDataSource: NoteDataSource, noteId: Int64? = nil) {
         self.noteDataSource = noteDataSource
         self.noteId = noteId
     }
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .leading) {
+            TextField("Enter a title...", text: $viewModel.noteTitle)
+                .font(.title)
+            TextField("Enter some content...", text: $viewModel.noteContent)
+            Spacer()
+        }.toolbar(content: {
+            Button(action: {
+                viewModel.saveNote {
+                    self.presentation.wrappedValue.dismiss()
+                }
+            }) {
+                Image(systemName: "checkmark")
+            }
+        })
+        .padding()
+        .background(Color(hex: viewModel.noteColor).edgesIgnoringSafeArea(.all))
+        .onAppear {
+            viewModel.setParamsAndLoadNote(noteDataSource: noteDataSource, noteId: noteId)
+        }
     }
 }
 
 struct NoteDetailScreen_Previews: PreviewProvider {
     static var previews: some View {
-        NoteDetailScreen()
+        EmptyView()
     }
 }

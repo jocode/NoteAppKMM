@@ -29,10 +29,13 @@ struct NoteListScreen: View {
                     EmptyView()
                 }.hidden()
                 
-                HideableSearchTextField<EmptyView>(onSearhToggle: {
+                HideableSearchTextField<NoteDetailScreen>(onSearhToggle: {
                     viewModel.toggleIsSearchActive()
                 }, destinationProvider: {
-                    EmptyView()
+                    NoteDetailScreen(
+                        noteDataSource: noteDataSource,
+                        noteId: nil
+                    )
                 }, isSearchActive: viewModel.isSearchActive, searchText: $viewModel.searchText)
                 .frame(maxWidth: .infinity, minHeight: 40)
                 .padding()
@@ -55,14 +58,12 @@ struct NoteListScreen: View {
                     }
                 }
             }
-            .onAppear {
-                viewModel.loadNotes()
-            }
             .listStyle(.plain)
             
         }
         .onAppear {
             viewModel.setNoteDataSource(noteDataSource: noteDataSource)
+            viewModel.loadNotes()
         }
     }
 }
