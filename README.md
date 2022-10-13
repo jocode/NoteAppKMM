@@ -1,5 +1,12 @@
 # Clean Architecture CRUD App Using Kotlin Multiplatform Mobile
 
+This is an app for taking notes created in Kotlin Multiplatform Mobile.
+
+| iOS                                            | Android                                                |
+|------------------------------------------------|--------------------------------------------------------|
+| ![Note List iOS](images/ios_note_list.png)     | ![Note List Android](images/android_note_list.png)     |
+| ![Note Detail iOS](images/ios_note_detail.png) | ![Note Detail Android](images/android_note_detail.png) |
+
 First of all we need to add dependencies for both platform.
 Dependencies are added on the `shared` module in the [`build.gradle.kts`](shared/build.gradle.kts) file.
 
